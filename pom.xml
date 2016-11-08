@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Copyright (c) 2013 Louis Zuckerman All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are
     met:
-    
+
        * Redistributions of source code must retain the above copyright
     notice, this list of conditions and the following disclaimer.
        * Redistributions in binary form must reproduce the above
     copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the
     distribution.
-       * Neither the names of the authors nor the names of 
+       * Neither the names of the authors nor the names of
     contributors may be used to endorse or promote products derived from
     this software without specific prior written permission.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -27,11 +27,11 @@
     THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-    
+
     =======
-    
+
     The project structure, mostly in the form of large sections of maven pom.xml
-    files, was derived from the leveldbjni project with significant help from 
+    files, was derived from the leveldbjni project with significant help from
     Hiram Chirino (thanks, Hiram!).  The leveldbjni project is hosted on github:
     https://github.com/fusesource/leveldbjni
 -->
@@ -46,7 +46,7 @@
 
     <groupId>com.peircean.libgfapi-jni</groupId>
     <artifactId>libgfapi-project</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -60,10 +60,11 @@
         </license>
     </licenses>
 
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <hawtjni-version>1.14</hawtjni-version>
-        
+
         <!-- The tests connect to the vagrant box provided by glusterfs-java-filesystem -->
         <!-- so that needs to be running in order for the tests to run. -->
         <glusterfs.server>172.31.31.31</glusterfs.server>
@@ -77,7 +78,13 @@
     </modules>
 
     <inceptionYear>2013</inceptionYear>
-
+<distributionManagement>
+      <repository>
+         <id>csean</id>
+         <name>Nexus Comtec</name>
+         <url>http://nexus.comtec.lan/content/repositories/Csean</url>
+      </repository>
+   </distributionManagement>
     <scm>
         <url>https://github.com/semiosis/libgfapi-jni</url>
         <connection>scm:git:https://github.com/semiosis/libgfapi-jni.git</connection>
@@ -134,6 +141,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
