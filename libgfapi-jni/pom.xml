@@ -24,24 +24,19 @@
    project is hosted on github: https://github.com/fusesource/leveldbjni -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
    <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>com.peircean.libgfapi-jni</groupId>
       <artifactId>libgfapi-project</artifactId>
       <version>1.0.5</version>
    </parent>
-
    <artifactId>libgfapi-jni</artifactId>
    <packaging>jar</packaging>
-
    <name>${project.artifactId}</name>
    <description>libgfapi-jni is a jni library for accessing glusterfs via the libgfapi C library.</description>
-
    <properties>
       <skipAutogen>false</skipAutogen>
    </properties>
-
    <dependencies>
       <dependency>
          <groupId>org.fusesource.hawtjni</groupId>
@@ -49,7 +44,6 @@
          <version>${hawtjni-version}</version>
       </dependency>
    </dependencies>
-
    <build>
       <resources>
          <resource>
@@ -61,7 +55,6 @@
          </resource>
       </resources>
       <plugins>
-
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>

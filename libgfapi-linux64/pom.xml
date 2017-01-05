@@ -42,7 +42,7 @@
       <dependency>
          <groupId>com.peircean.libgfapi-jni</groupId>
          <artifactId>libgfapi-jni</artifactId>
-         <version>1.0.5-SNAPSHOT</version>
+         <version>1.0.5</version>
       </dependency>
    </dependencies>
 
@@ -92,7 +92,6 @@
                   <arg>--with-glfs=${env.GLFS_HOME}</arg>
                </configureArgs>
             </configuration>
-
          </plugin>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
