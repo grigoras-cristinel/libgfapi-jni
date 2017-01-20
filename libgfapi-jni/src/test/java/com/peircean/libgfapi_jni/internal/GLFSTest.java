@@ -70,6 +70,7 @@ import org.testng.annotations.Test;
 import com.peircean.libgfapi_jni.internal.structs.dirent;
 import com.peircean.libgfapi_jni.internal.structs.stat;
 import com.peircean.libgfapi_jni.internal.structs.statvfs;
+import com.peircean.libgfapi_jni.internal.structs.timespec;
 
 /**
  * A Unit test for the GLFS class implementation.
@@ -79,9 +80,12 @@ import com.peircean.libgfapi_jni.internal.structs.statvfs;
  */
 public class GLFSTest {
 
+	private static final int TIMESS = 1199149261;//// Tue, 01 Jan 2008
+													//// 01:01:01 GMT
 	public static final String DIR_ROOT = "/r" + new Date().getTime() + "";
 	public static final String DIR_PATH = DIR_ROOT + "baz/";
 	public static final String FILE_PATH = DIR_PATH + "bar";
+	public static final String FILE_PATH_BIG = DIR_PATH + "bbar";
 	public static final String FILE_PATH_RENAMED = DIR_PATH + "bar2";
 	public static final String HELLO_ = "hello ";
 	public static final String WORLD = "world";
@@ -95,6 +99,7 @@ public class GLFSTest {
 	public static stat stat = new stat();
 	private long vol;
 	private long file;
+	private long fileBig;
 	private long dir;
 	private long dirpos;
 	private Properties properties = null;
@@ -126,7 +131,6 @@ public class GLFSTest {
 	@Test(dependsOnMethods = "testSetlog")
 	public void testServer() throws IOException {
 		String address = getProperties().getProperty("glusterfs.server");
-
 		int server = glfs_set_volfile_server(vol, "tcp", address, 24007);
 		System.out.println("SERVER: " + address + " result " + server);
 		assertEquals(0, server);
@@ -183,6 +187,15 @@ public class GLFSTest {
 		assertTrue(file > 0);
 	}
 
+	@Test(dependsOnMethods = "testOpen_nonExisting")
+	public void testCreateBig() {
+		int flags = GlusterOpenOption.READWRITE().createNew().getValue();
+		System.out.println("OPENEx 2 flags: " + Integer.toOctalString(flags));
+		fileBig = glfs_creat(vol, FILE_PATH_BIG, flags, 0666);
+		System.out.println("CREAT 2: " + file);
+		assertTrue(file > 0);
+	}
+
 	@Test(dependsOnMethods = "testCreate")
 	public void testXattrSet() {
 		byte[] vall = XATTR1V.getBytes();
@@ -224,14 +237,11 @@ public class GLFSTest {
 		int length = SYMLINK_TARGET.length();
 		byte[] content = new byte[length];
 		long read = glfs_readlink(vol, SYMLINK, content, length);
-
 		String readValue = new String(content);
 		System.out.println("SYMLINK val: " + readValue);
 		System.out.println("SYMLINK len: " + read);
-
 		assertEquals(length, read);
 		assertEquals(SYMLINK_TARGET, readValue);
-
 	}
 
 	@Test(dependsOnMethods = "testReadlink")
@@ -244,6 +254,21 @@ public class GLFSTest {
 		assertEquals(length, write);
 	}
 
+	@Test(dependsOnMethods = "testCreateBig")
+	public void testWriteNewBig() {
+		int length = DataForTest.test12000.length();
+		int write = glfs_write(fileBig, DataForTest.test12000.getBytes(), length, 0);
+		System.out.println("WRITE: " + write);
+		assertEquals(length, write);
+	}
+
+	@Test(dependsOnMethods = "testWriteNewBig")
+	public void testCloseBig_new() {
+		int close = glfs_close(fileBig);
+		System.out.println("CLOSE: " + close);
+		assertEquals(0, close);
+	}
+
 	@Test(dependsOnMethods = "testWriteNew")
 	public void testClose_new() {
 		int close = glfs_close(file);
@@ -252,10 +277,46 @@ public class GLFSTest {
 	}
 
 	@Test(dependsOnMethods = "testClose_new")
+	public void testChangeTime() {
+		timespec[] tt = new timespec[2];
+		tt[0] = new timespec();// atime
+		tt[0].tv_sec = TIMESS;
+		tt[1] = new timespec();// mtime
+		tt[1].tv_sec = TIMESS;
+		int utimens = GLFS.glfs_utimens(vol, FILE_PATH, tt);
+		System.out.println("UTIMENS: " + utimens);
+		if (utimens < 0) {
+			System.out.println("UTIMENS Error " + UtilJNI.strerror());
+		}
+		assertEquals(0, utimens);
+	}
+
+	@Test(dependsOnMethods = "testChangeTime")
+	public void testReadTimeChanged() {
+		stat buf = new stat();
+		int stat = GLFS.glfs_stat(vol, FILE_PATH, buf);
+		if (stat < 0) {
+			System.out.println("ReadTime changed Error " + UtilJNI.strerror());
+		}
+		assertEquals(buf.mtime, TIMESS);
+		System.out.println("ReadTime changed: " + stat);
+		assertEquals(0, stat);
+	}
+
+	@Test(dependsOnMethods = "testClose_new")
 	public void testOpen_existing() {
 		int flags = GlusterOpenOption.READWRITE().append().getValue();
 		System.out.println("OPENEx flags: " + Integer.toOctalString(flags));
 		file = glfs_open(vol, FILE_PATH, flags);
+		System.out.println("OPENEx: " + file);
+		assertTrue(0 < file);
+	}
+
+	@Test(dependsOnMethods = "testCloseBig_new")
+	public void testOpenBig_existing() {
+		int flags = GlusterOpenOption.READWRITE().append().getValue();
+		System.out.println("OPENEx flags: " + Integer.toOctalString(flags));
+		fileBig = glfs_open(vol, FILE_PATH_BIG, flags);
 		System.out.println("OPENEx: " + file);
 		assertTrue(0 < file);
 	}
@@ -283,6 +344,21 @@ public class GLFSTest {
 		int length = helloWorld.length();
 		byte[] content = new byte[length];
 		long read = glfs_read(file, content, length, 0);
+
+		String readValue = new String(content);
+		System.out.println("READ val: " + readValue);
+		System.out.println("READ len: " + read);
+
+		assertEquals(length, read);
+		assertEquals(helloWorld, readValue);
+	}
+
+	@Test(dependsOnMethods = "testOpenBig_existing")
+	public void testReadBig() {
+		String helloWorld = DataForTest.test12000;
+		int length = helloWorld.length();
+		byte[] content = new byte[length];
+		long read = glfs_read(fileBig, content, length, 0);
 
 		String readValue = new String(content);
 		System.out.println("READ val: " + readValue);
@@ -362,7 +438,7 @@ public class GLFSTest {
 		assertEquals(0, close);
 	}
 
-	@Test(dependsOnMethods = "testClose")
+	@Test(dependsOnMethods = { "testClose", "testCloseBig_new" })
 	public void testAccess() {
 		int acc = glfs_access(vol, FILE_PATH, 0777);
 		System.out.println("ACCESS 777: " + acc);
@@ -471,6 +547,13 @@ public class GLFSTest {
 		assertEquals(0, unl);
 	}
 
+	@Test(dependsOnMethods = "testCloseBig_new")
+	public void testUnlinkBig() {
+		int unl = glfs_unlink(vol, FILE_PATH_BIG);
+		System.out.println("UNLINK: " + unl);
+		assertEquals(0, unl);
+	}
+
 	@Test(dependsOnMethods = "testUnlink")
 	public void testUnlink_NonExisting() {
 		int unl = glfs_unlink(vol, "/3q9g48hnaovcw802j039f");
@@ -484,7 +567,7 @@ public class GLFSTest {
 		assertEquals(2, errno);
 	}
 
-	@Test(dependsOnMethods = "testUnlink_NonExisting")
+	@Test(dependsOnMethods = { "testUnlink_NonExisting", "testUnlinkBig" })
 	public void testRmdir() {
 		int ret = glfs_rmdir(vol, DIR_PATH);
 		System.out.println("REMOVE STATUS: " + ret);

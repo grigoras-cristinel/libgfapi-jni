@@ -41,6 +41,7 @@ import org.fusesource.hawtjni.runtime.Library;
 import com.peircean.libgfapi_jni.internal.structs.dirent;
 import com.peircean.libgfapi_jni.internal.structs.stat;
 import com.peircean.libgfapi_jni.internal.structs.statvfs;
+import com.peircean.libgfapi_jni.internal.structs.timespec;
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -291,33 +292,104 @@ public class GLFS {
 
 	// int glfs_fchmod (glfs_fd_t *fd, mode_t mode) ;
 
-	// int glfs_chown (glfs_t *fs, const char *path, uid_t uid, gid_t gid) ;
+	/**
+	 * <code>int glfs_chown (glfs_t *fs, const char *path, uid_t uid, gid_t gid) ;</code>
+	 *
+	 * @param fd
+	 *            file system pointer
+	 * @param path
+	 *            path
+	 * @param uid
+	 *            user id
+	 * @param gid
+	 *            group id
+	 * @return -1 on error
+	 */
+	@JniMethod
+	public static final native int glfs_chown(@JniArg(cast = "glfs_t *") long fd,
+			@JniArg(cast = "const char *", flags = ArgFlag.NO_OUT) String path,
+			@JniArg(cast = "uid_t", flags = ArgFlag.NO_OUT) long uid,
+			@JniArg(cast = "gid_t", flags = ArgFlag.NO_OUT) long gid);
 
-	// int glfs_lchown (glfs_t *fs, const char *path, uid_t uid, gid_t gid) ;
+	/**
+	 * <code>int glfs_lchown (glfs_t *fs, const char *path, uid_t uid, gid_t gid) ;</code>
+	 *
+	 * @param fd
+	 *            file system pointer
+	 * @param path
+	 *            link path
+	 * @param uid
+	 *            user id
+	 * @param gid
+	 *            group id
+	 * @return -1 on error
+	 */
+	@JniMethod
+	public static final native int glfs_lchown(@JniArg(cast = "glfs_t *") long fd,
+			@JniArg(cast = "const char *", flags = ArgFlag.NO_OUT) String path,
+			@JniArg(cast = "uid_t", flags = ArgFlag.NO_OUT) long uid,
+			@JniArg(cast = "gid_t", flags = ArgFlag.NO_OUT) long gid);
 
-	// int glfs_fchown (glfs_fd_t *fd, uid_t uid, gid_t gid) ;
+	/**
+	 * <code>int glfs_fchown (glfs_fd_t *fd, uid_t uid, gid_t gid)</code>
+	 *
+	 * @param fd
+	 *            file system pointer
+	 * @param uid
+	 *            user id
+	 * @param gid
+	 *            group id
+	 * @return -1 on error
+	 */
+	@JniMethod
+	public static final native int glfs_fchown(@JniArg(cast = "glfs_fd_t *") long fd,
+			@JniArg(cast = "uid_t", flags = ArgFlag.NO_OUT) long uid,
+			@JniArg(cast = "gid_t", flags = ArgFlag.NO_OUT) long gid);
 
-	//
-	// ;
-	// /**
-	// * <code>int glfs_utimens (glfs_t *fs, const char *path,struct timespec
-	// times[2])</code>
-	// *
-	// * @param fd
-	// * @param path
-	// * @param times
-	// * @return 0 success,-1 is retuned and errno is set
-	// */
-	// @JniMethod()
-	// public static final native int glfs_utimens(@JniArg(cast = "glfs_t *")
-	// long fd,
-	// @JniArg(cast = "const char *", flags = ArgFlag.NO_OUT) String path,
-	// @JniArg(flags = { ArgFlag.NO_OUT, ArgFlag.BY_VALUE }) timespec times[]);
+	/**
+	 * <code>int glfs_utimens (glfs_t *fs, const char *path,struct timespec	times[2])</code>
+	 *
+	 * @param fd
+	 *            file system pointer
+	 * @param path
+	 *            file path
+	 * @param times
+	 *            timens[2]
+	 * @return 0 success,-1 is retuned and errno is set
+	 **/
+	@JniMethod()
+	public static final native int glfs_utimens(@JniArg(cast = "glfs_t *") long fd,
+			@JniArg(cast = "const char *", flags = ArgFlag.NO_OUT) String path,
+			@JniArg(flags = { ArgFlag.NO_OUT }) timespec[] times);
 
-	// int glfs_lutimens (glfs_t *fs, const char *path,struct timespec times[2])
-	// ;
+	/**
+	 * <code>int glfs_lutimens (glfs_t *fs, const char *path,struct timespec times[2])</code>
+	 *
+	 * @param fd
+	 *            file system pointer
+	 * @param path
+	 *            file path to link
+	 * @param times
+	 *            timens[2]
+	 * @return 0 success,-1 is retuned and errno is set
+	 */
+	@JniMethod()
+	public static final native int glfs_lutimens(@JniArg(cast = "glfs_t *") long fd,
+			@JniArg(cast = "const char *", flags = ArgFlag.NO_OUT) String path,
+			@JniArg(flags = { ArgFlag.NO_OUT }) timespec[] times);
 
-	// int glfs_futimens (glfs_fd_t *fd, struct timespec times[2]) ;
+	/**
+	 * <code>int glfs_futimens (glfs_fd_t *fs, struct timespec	times[2])</code>
+	 *
+	 * @param fd
+	 *            file system pointer
+	 * @param times
+	 *            timens[2]
+	 * @return 0 success,-1 is retuned and errno is set
+	 */
+	@JniMethod()
+	public static final native int glfs_futimens(@JniArg(cast = "glfs_fd_t *") long fd,
+			@JniArg(flags = { ArgFlag.NO_OUT }) timespec[] times);
 
 	// ssize_t glfs_getxattr (glfs_t *fs, const char *path, const char
 	// *name,void *value, size_t size) ;

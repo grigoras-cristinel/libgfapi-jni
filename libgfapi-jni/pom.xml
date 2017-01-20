@@ -67,7 +67,6 @@
                </execution>
             </executions>
          </plugin>
-
          <plugin>
             <groupId>org.fusesource.hawtjni</groupId>
             <artifactId>maven-hawtjni-plugin</artifactId>
