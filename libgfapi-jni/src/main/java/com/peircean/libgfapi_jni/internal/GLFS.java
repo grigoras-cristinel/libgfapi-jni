@@ -204,9 +204,18 @@ public class GLFS {
 
 	// int glfs_setfsuid (uid_t fsuid) ;
 
+	@JniMethod
+	public static final native int glfs_setfsuid(@JniArg(cast = "uid_t", flags = ArgFlag.NO_OUT) long fsuid);
+
 	// int glfs_setfsgid (gid_t fsgid) ;
 
+	@JniMethod
+	public static final native int glfs_setfsdid(@JniArg(cast = "gid_t", flags = ArgFlag.NO_OUT) long fsuid);
+
 	// int glfs_setfsgroups (size_t size, const gid_t *list) ;
+	@JniMethod
+	public static final native int glfs_setfsgroups(@JniArg(cast = "size_t", flags = ArgFlag.NO_OUT) long size,
+			@JniArg(cast = "const gid_t *", flags = { ArgFlag.NO_OUT }) long[] groups);
 
 	// int glfs_set_xlator_option (glfs_t *fs, const char *xlator, const char
 	// *key,const char *value) ;
