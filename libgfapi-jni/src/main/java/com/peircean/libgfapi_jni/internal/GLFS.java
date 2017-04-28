@@ -210,7 +210,7 @@ public class GLFS {
 	// int glfs_setfsgid (gid_t fsgid) ;
 
 	@JniMethod
-	public static final native int glfs_setfsdid(@JniArg(cast = "gid_t", flags = ArgFlag.NO_OUT) long fsuid);
+	public static final native int glfs_setfsgid(@JniArg(cast = "gid_t", flags = ArgFlag.NO_OUT) long fsuid);
 
 	// int glfs_setfsgroups (size_t size, const gid_t *list) ;
 	@JniMethod
