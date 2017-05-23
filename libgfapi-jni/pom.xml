@@ -86,7 +86,6 @@
                      <goal>exec</goal>
                   </goals>
                   <configuration>
-                     <workingDirectory>/home/grigoras/proiecte/glusterfs/workspacegluster/glusterfs-java-filesystem-project</workingDirectory>
                      <executable>vagrant</executable>
                      <commandlineArgs>up</commandlineArgs>
                   </configuration>
@@ -98,9 +97,8 @@
                      <goal>exec</goal>
                   </goals>
                   <configuration>
-                     <workingDirectory>/home/grigoras/proiecte/glusterfs/workspacegluster/glusterfs-java-filesystem-project</workingDirectory>
                      <executable>vagrant</executable>
-                     <commandlineArgs>halt</commandlineArgs>
+                     <commandlineArgs>destroy -f</commandlineArgs>
                   </configuration>
                </execution>
             </executions>
