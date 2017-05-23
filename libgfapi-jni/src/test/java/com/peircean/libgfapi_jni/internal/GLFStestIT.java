@@ -78,7 +78,7 @@ import com.peircean.libgfapi_jni.internal.structs.timespec;
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a> &
  *         <a href="http://about.me/louiszuckerman">Louis Zuckerman</a>
  */
-public class GLFSTest {
+public class GLFStestIT {
 
 	private static final int TIMESS = 1199149261;//// Tue, 01 Jan 2008
 													//// 01:01:01 GMT

@@ -47,8 +47,6 @@
          <distribution>repo</distribution>
       </license>
    </licenses>
-
-
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <hawtjni-version>1.15-SNAPSHOT</hawtjni-version>
@@ -59,17 +57,16 @@
       <glusterfs.volume>foo</glusterfs.volume>
       <client.logfile>/tmp/glfsjni.log</client.logfile>
    </properties>
-
    <modules>
       <module>libgfapi-jni</module>
       <module>libgfapi-linux64</module>
    </modules>
-
    <inceptionYear>2013</inceptionYear>
    <distributionManagement>
       <repository>
          <id>csean</id>
          <name>Nexus Comtec</name>
+         <uniqueVersion>false</uniqueVersion>
          <url>http://nexus.comtec.lan/content/repositories/Csean</url>
       </repository>
    </distributionManagement>
