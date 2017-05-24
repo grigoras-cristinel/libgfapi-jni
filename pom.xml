@@ -82,10 +82,11 @@
          <name>Comtec Nexus</name>
          <url>http://nexus.comtec.lan/content/groups/public/</url>
          <releases>
-            true
+            <enabled>true</enabled>
          </releases>
          <snapshots>
-            true
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
          </snapshots>
       </pluginRepository>
    </pluginRepositories>
