@@ -76,7 +76,19 @@
       <developerConnection>scm:git:ssh://git@github.com/semiosis/libgfapi-jni.git</developerConnection>
       <tag>HEAD</tag>
    </scm>
-
+   <pluginRepositories>
+      <pluginRepository>
+         <id>nexus</id>
+         <name>Comtec Nexus</name>
+         <url>http://nexus.comtec.lan/content/groups/public/</url>
+         <releases>
+            true
+         </releases>
+         <snapshots>
+            true
+         </snapshots>
+      </pluginRepository>
+   </pluginRepositories>
    <developers>
       <developer>
          <id>chirino</id>
