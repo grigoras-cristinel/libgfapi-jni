@@ -55,54 +55,7 @@
          </resource>
       </resources>
       <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.20</version>
-            <configuration>
-               <detail>true</detail>
-               <forkCount>1</forkCount>
-               <reuseForks>true</reuseForks>
-               <argLine>-Djava.library.path=${project.basedir}/../libgfapi-linux64/target/native-build/target/lib</argLine>
-            </configuration>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>integration-test</goal>
-                     <goal>verify</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
-            <executions>
-               <execution>
-                  <id>start-vagrant</id>
-                  <phase>pre-integration-test</phase>
-                  <goals>
-                     <goal>exec</goal>
-                  </goals>
-                  <configuration>
-                     <executable>vagrant</executable>
-                     <commandlineArgs>up</commandlineArgs>
-                  </configuration>
-               </execution>
-               <execution>
-                  <id>halt-vagrant</id>
-                  <phase>post-integration-test</phase>
-                  <goals>
-                     <goal>exec</goal>
-                  </goals>
-                  <configuration>
-                     <executable>vagrant</executable>
-                     <commandlineArgs>destroy -f</commandlineArgs>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
+
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
