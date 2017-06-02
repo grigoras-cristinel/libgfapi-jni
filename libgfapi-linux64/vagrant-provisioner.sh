@@ -1,6 +1,6 @@
 #!/bin/bash
 
-add-apt-repository -y ppa:gluster/glusterfs-3.8
+add-apt-repository -y ppa:gluster/glusterfs-3.10
 apt-get update
 # apt-get -y dist-upgrade
 apt-get -y install glusterfs-server
